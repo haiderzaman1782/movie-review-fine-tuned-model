@@ -12,26 +12,8 @@ class SentimentModel:
         
         # ✅ NEW: List of words that usually mean Neutral
         self.neutral_keywords = [
-            "average", "okay", "decent", "nothing special",
-            "not bad", "one-time watch", "mediocre", "mixed",
-            "fine but", "could have been better",
-
-            "just okay", "fair enough", "so-so", "ordinary",
-            "acceptable", "passable", "mid", "neutral",
-            "no strong feelings", "not impressive",
-
-            "not great not terrible", "some good some bad",
-            "hit or miss", "watchable", "forgettable",
-            "middle of the road", "standard", "typical",
-
-            "starts well but", "loses momentum", "slow in parts",
-            "predictable but fine", "nothing new", "not memorable",
-
-            "time pass", "average experience", "okayish",
-            "just a normal movie", "not engaging enough",
-
-            "has potential but", "falls short", "could be improved",
-            "decent attempt", "mixed feelings"
+            "average", "okay", "decent", "nothing special","not bad", "one-time watch", "mediocre", "mixed","fine but", "could have been better","just okay", "fair enough", "so-so", "ordinary","acceptable", "passable", "mid", "neutral","no strong feelings", "not impressive","not great not terrible", "some good some bad",
+            "hit or miss", "watchable", "forgettable","middle of the road", "standard", "typical","starts well but", "loses momentum", "slow in parts","predictable but fine", "nothing new", "not memorable","time pass", "average experience", "okayish","just a normal movie", "not engaging enough","has potential but", "falls short", "could be improved","decent attempt", "mixed feelings"
 ]
 
 
@@ -81,7 +63,7 @@ class SentimentModel:
         for word in self.neutral_keywords:
             if word in text_lower:
                 print(f"   ⚠️ Found neutral keyword '{word}'. Forcing NEUTRAL.")
-                return "NEUTRAL", 85.00 # Fake high confidence
+                return "NEUTRAL", score # Fake high confidence
 
         # 2️⃣ CONFIDENCE THRESHOLD
         # If model is confused (< 60%), default to Neutral
