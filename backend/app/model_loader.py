@@ -12,9 +12,37 @@ class SentimentModel:
         
         # ✅ NEW: List of words that usually mean Neutral
         self.neutral_keywords = [
-            "average", "okay", "decent", "nothing special","not bad", "one-time watch", "mediocre", "mixed","fine but", "but" , "could have been better","just okay", "fair enough", "so-so", "ordinary","acceptable", "passable", "mid", "neutral","no strong feelings", "not impressive","not great not terrible", "some good some bad",
-            "hit or miss", "watchable", "forgettable","middle of the road", "standard", "typical","starts well but", "loses momentum", "slow in parts","predictable but fine", "nothing new", "not memorable","time pass", "average experience", "okayish","just a normal movie", "not engaging enough","has potential but", "falls short", "could be improved","decent attempt", "mixed feelings"
+            # Basic Neutral
+            "average", "okay", "decent", "fine", "mediocre",
+
+            # Mixed / Contrast Words
+            "but", "however", "although", "though", "yet", "on the other hand",
+
+            # Balanced Opinions
+            "not bad", "not great", "could be better", "could have been better",
+            "good but", "bad but", "nice but", "interesting but",
+
+            # One-time / Forgettable
+            "one-time watch", "watchable", "time pass", "forgettable",
+
+            # Emotional Balance
+            "mixed", "so-so", "hit or miss", "neither good nor bad",
+
+            # Effort but Weak Impact
+            "tries hard", "decent attempt", "fair effort", "not impressive",
+
+            # Story / Direction Related
+            "slow in parts", "dragged a bit", "weak ending", "predictable",
+
+            # Positive + Negative Combo Indicators
+            "good acting but", "great visuals but", "strong start but",
+            "nice concept but", "good first half but",
+
+            # Improvement Hints
+            "needed more depth", "needed better editing", 
+            "needed stronger writing", "needed tighter pacing"
 ]
+
 
 
     def load_model(self, adapter_path: str = "./model"):
