@@ -162,7 +162,7 @@ st.markdown("""
 
 # ============== API CONFIGURATION ==============
 
-API_URL = "http://localhost:8000"
+API_URL = "https://haider32-movie-analysis.hf.space"
 
 # ============== HELPER FUNCTIONS ==============
 
