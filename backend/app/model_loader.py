@@ -75,31 +75,62 @@ class SentimentModel:
         print("✅ Model Loaded Successfully!")
         print("=" * 50)
 
+    def force_neutral_if_mixed(self, text):
+        positive_words = [
+                "great", "amazing", "good", "nice", "excellent",
+                "awesome", "fantastic", "brilliant", "enjoyable"
+            ]
+
+        negative_words = [
+            "bad", "shit", "boring", "worst", "terrible",
+            "awful", "poor", "disappointing", "trash"
+        ]
+
+        contrast_words = [
+                "but", "however", "although", "though", "yet"
+            ]
+
+        text = text.lower()
+
+        has_positive = any(p in text for p in positive_words)
+        has_negative = any(n in text for n in negative_words)
+        has_contrast = any(c in text for c in contrast_words)
+
+            # ✅ HARD OVERRIDE FOR MIXED SENTIMENT
+        if has_positive and has_negative and has_contrast:
+            print("✅ Mixed sentiment detected. FORCING NEUTRAL.")
+            return True
+
+        return False
+
+
+
     def _process_prediction(self, result, text):
-        """Helper function with Logic + Keyword Override"""
         raw_label = result['label']
         score = result['score'] * 100
         text_lower = text.lower()
 
-        # --- 🔍 DEBUG PRINT ---
         print(f"DEBUG: '{text[:30]}...' -> {raw_label} ({score:.2f}%)")
 
         final_sentiment = raw_label.upper()
 
-        # 1️⃣ KEYWORD OVERRIDE ( The "Smart Filter" )
-        # If the text contains specific neutral words, override the model
+        # ✅ 1️⃣ HARD MIXED OVERRIDE (THIS FIXES YOUR EXACT BUG)
+        if self.force_neutral_if_mixed(text):
+            return "NEUTRAL", 85.0
+
+        # ✅ 2️⃣ KEYWORD OVERRIDE
         for word in self.neutral_keywords:
             if word in text_lower:
-                print(f"   ⚠️ Found neutral keyword '{word}'. Forcing NEUTRAL.")
-                return "NEUTRAL", score # Fake high confidence
+                print(f"⚠️ Found neutral keyword '{word}'. Forcing NEUTRAL.")
+                return "NEUTRAL", 75.0
 
-        # 2️⃣ CONFIDENCE THRESHOLD
-        # If model is confused (< 60%), default to Neutral
-        if score < 60.0:
-            print(f"   ⚠️ Low confidence ({score:.2f}%). Forcing NEUTRAL.")
-            final_sentiment = "NEUTRAL"
-        
+            # ✅ 3️⃣ LOW CONFIDENCE FALLBACK
+            if score < 60.0:
+                print(f"⚠️ Low confidence ({score:.2f}%). Forcing NEUTRAL.")
+                final_sentiment = "NEUTRAL"
+
         return final_sentiment, round(score, 2)
+
 
     def predict(self, text: str) -> dict:
         if not self.is_loaded:
